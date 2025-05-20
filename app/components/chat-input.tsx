@@ -23,7 +23,7 @@ export default function ChatInput() {
         </div>
         <div className="flex gap-1">
           <Button variant="outline" size="icon">
-            <Mic className="size-4" />
+            <Mic className="size-4" />,
           </Button>
           <Button variant="outline" size="icon">
             <ArrowUp className="size-4" />
