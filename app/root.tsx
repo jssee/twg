@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -35,21 +36,48 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex flex-col h-dvh">
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarTrigger />
-
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-        </SidebarProvider>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
       </body>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const credentials = prompt(
+        "Please enter credentials (username:password):"
+      );
+      if (credentials === "mojojojo") {
+        setIsAuthenticated(true);
+      } else {
+        alert("Invalid credentials");
+        checkAuth();
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Authenticating...
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarTrigger />
+      <Outlet />
+    </SidebarProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
